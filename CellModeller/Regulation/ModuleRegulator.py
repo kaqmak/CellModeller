@@ -1,7 +1,3 @@
-import copy
-import os.path
-import sys
-
 class ModuleRegulator:
     def __init__(self, sim, biophys=None, signalling=None):
         self.modName = sim.moduleName
@@ -12,7 +8,7 @@ class ModuleRegulator:
         self.signal = signalling
         # Simulator is responsible for loading the model as a python module
         # This class uses the module imported by Simulator
-        self.module = sim.module 
+        self.module = sim.module
 
     def addCell(self, cellState, **kwargs):
         self.module.init(cellState, **kwargs)
@@ -31,7 +27,7 @@ class ModuleRegulator:
 
     def specRateCL(self):
         return self.module.specRateCL()
-    
+
     def signalRates(self, cstate, speciesLevels, signalLevels):
         return self.module.signalRates(cstate, speciesLevels, signalLevels)
 
@@ -42,7 +38,7 @@ class ModuleRegulator:
         csv = list(self.cellStates.values())
         nCells = len(csv)
         for i in range(nCells):
-            levels[i,:] = csv[i].species
+            levels[i, :] = csv[i].species
 
     def step(self, dt=0):
         try:
@@ -56,5 +52,3 @@ class ModuleRegulator:
         divfunc = getattr(self.module, "divide", None)
         if callable(divfunc):
             divfunc(pState, d1State, d2State)
-
-
